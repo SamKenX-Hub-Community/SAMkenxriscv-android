@@ -1,17 +1,17 @@
-# RISC-V Android 
+# RISC-V Android
 
 This is the RISC-V Android collaborative source code repo. It contains all the modified AOSP(Android open source project) repositories with RISC-V support, while other non-architecture related repositories can be directly downloaded from the official AOSP repo.
 
 The main purpose of this repo is to provide a codebase for the developers, continuously improve the RISC-V architecture support with the collaboration of community and upstream these support to the official AOSP repo.
 
-## Getting started 
+## Getting started
 
-Before downloading RISC-V Android source code please check you work environment, it is recommended to install a Linux system(Ubuntu 18.04 is preferred) with at least 250G disk space, 16 GB+ of RAM and more than 6 CPU cores. 
+Before downloading RISC-V Android source code please check you work environment, it is recommended to install a Linux system(Ubuntu 18.04 is preferred) with at least 250G disk space, 16 GB+ of RAM and more than 6 CPU cores.
 
 To download the RISC-V Android source tree to your working directory:
 
 ```bash
-mkdir ~/riscv-android-src && cd mkdir ~/riscv-android-src
+mkdir ~/riscv-android-src && cd ~/riscv-android-src
 repo init -u git@github.com:riscv-android-src/manifest.git -b riscv64-android-10.0.0_dev
 repo sync
 ```
@@ -53,7 +53,7 @@ m -j
 Run the RISC-V 64 AVD system image in the Android Emulator:
 
 ```bash
-emulator -selinux permissive -qemu -m 3800M -bios prebuilts/qemu-kernel/riscv64/ranchu/fw_jump.bin 
+emulator -selinux permissive -qemu -m 3800M -bios prebuilts/qemu-kernel/riscv64/ranchu/fw_jump.bin
 The options before -qemu are handled by emulator:
 -debug                 enable/disable debug messages
 -show-kernel           display kernel messages
@@ -71,6 +71,10 @@ Usage of other branch may refer to:  [Branches and configurations](https://githu
 If you want to rebuild the prebuild projects，please check：[Prebuilt projects](https://github.com/riscv-android-src/riscv-android/blob/main/doc/prebuilt_projects.md)
 
 If you want to develop Android 12 on RISC-V，please check：[Android 12 RISC-V guide](https://github.com/riscv-android-src/riscv-android/blob/main/doc/android12.md)
+
+If you want to run the compatibility test suit, please check：[CTS build guide](https://github.com/riscv-android-src/riscv-android/blob/main/doc/CTS_compile.md)
+
+If you want to build applicaion for RISC-V, please check：[App build guide](https://github.com/riscv-android-src/riscv-android/blob/main/doc/app.md)
 
 If you have encountered any problem with the environment setup，please check：[Common faults and treatment methods](https://github.com/riscv-android-src/riscv-android/blob/main/doc/common_faults_and_treatment_methods.md)
 
@@ -97,7 +101,7 @@ To contribute patches:
    + <project path="bionic" name="platform-bionic" groups="pdk" remote="your_personal_remote" revision="riscv64-android-10.0.0_dev_xxx_support" />
    ```
 
-4. All the new work should base on the corresponding development branch. 
+4. All the new work should base on the corresponding development branch.
 
 5. Create commits making incremental, distinct, logically complete changes with appropriate commit messages.
 
@@ -108,13 +112,78 @@ To contribute patches:
 8. Create a Github Pull Request targeting the the corresponding development branch. Associate the Pull Request with issue if it is an bug fix.
 
 ## Recent Updates
-2021/01/18		Upload the riscv64-android-12.0.0_dev branch to this repo
 
-2022/01/14		Add RISC-V support for Android emulator build
+2022/11/04
 
-2021/11/03		Add RISC-V support for Android rust toolchain
+- Support build GKI kernel/ko for andorid emulator
 
-2021/10/20		Upload the riscv64-android-10.0.0_dev branch to this repo
+  - kernel-manifest: diff b25f5e46 c6e2caa9
+  - kernel-common: diff 452781c1 b441c0ba
+  - kernel-common-modules-virtual-device: diff aaae95d2 049223f1
+  - kernel-prebuilts-5.10-riscv64: diff 55075b59 d8ff2937
+  - kernel-prebuilts-common-modules-virtual-device-5.10-riscv64: new created, f0e2dfd4
+  - manifest: diff 382ae35f b9486427
+  - riscv-android: diff e8ba76eb 3fb76b1b
+
+2022/10/01
+
+- Updated platform/manifest: diff e07293e3 382ae35f
+  new some repos:
+  - path="test/vts" name="platform-test-vts": 95fe3380
+  - path="test/vts-testcase/vndk" name="platform-test-vts-testcase-vndk": 61d0146a
+  - path="prebuilts/abi-dumps/ndk" name="platform-prebuilts-abi-dumps-ndk": 39a11fa4
+  - path="prebuilts/abi-dumps/platform" name="platform-prebuilts-abi-dumps-platform": 0949c9a8
+
+- Updated after some CTS/VTS passed.
+  - platform-system-extras: diff 9c319627 8b382ab4
+  - platform-system-unwinding: diff 6d89de81 3533eaca
+  - platform-system-core: diff 832f227e c529b5e6
+  - platform-prebuilts-ndk: diff f79624980 a978e304
+  - platform-frameworks-native: diff 4c6fc31e c36761ca
+  - platform-frameworks-base: diff 5233a2f9 348f722a
+  - platform-cts: diff bfd55aae 0c258196
+  - platform-bionic: diff 1b007fc7 571ed8a0
+
+- Updated some prebuilt binaries
+  - platform-prebuilts-clang-host-linux-x86: 967c2732
+  - platform-prebuilts-android-emulator: 1a23e948
+  - kernel-prebuilts-5.10-riscv64: 0fc416bd
+  - platform-prebuilts-abi-dumps-vndk: fff63c58
+
+- Updated build system:
+  - platform-build: diff fe1a0ce6 5b09e53b
+
+- Big update for ART:
+  - platform-art: diff 925801f3 33357a36
+
+- Other misc:
+  - platform-development: diff a6376671e 460e9483
+  - platform-external-angle: diff 81253338 e4428723, add riscv64 support but has not been included in platform manifest
+
+2022/06/23
+
+- Update ART support for RISC-V: Including the compiler, dex2oat, disassembler, linker, runtime support
+- Add manifest for Clang & NDK generation
+- Add basic CTS & VTS build support for RISC-V
+- Update the prebuilt clang toolchain: Fix lto, thin-lto, tidy and cfi
+- Update the multimedia support for RISC-V. Fix omx service build and sepolicy
+- Fix goldfish_address_space pci support in emulator
+
+2022/01/18
+
+- Upload the riscv64-android-12.0.0_dev branch to this repo
+
+2022/01/14
+
+- Add RISC-V support for Android emulator build
+
+2021/11/03
+
+- Add RISC-V support for Android rust toolchain
+
+2021/10/20
+
+- Upload the riscv64-android-10.0.0_dev branch to this repo
 
 ## Further reading
 
@@ -154,7 +223,7 @@ This repo is maintained by Android SIG(special interest group) under RISC-V inte
 
 The Android SIG([CHARTER](https://github.com/riscv-admin/android/blob/main/CHARTER.md)) is aimed to coordinate efforts of developers working on the RISC-V architecture support of Android and help upstream the RISC-V support to official AOSP repo.
 
-Please hop in and join us to the discussions. You can subscribe the mailing lists [here](https://lists.riscv.org/g/sig-android). 
+Please hop in and join us to the discussions. You can subscribe the mailing lists [here](https://lists.riscv.org/g/sig-android).
 
 
 
